@@ -9,6 +9,7 @@ function Sidebar({ RecieveLocalStorageData }) {
   const [storedItems, setStoredItems] = useState([]);
   const currentTime = new Date().toLocaleTimeString();
   const currentDate = new Date().toLocaleDateString();
+
   useEffect(() => {
     // Function to retrieve and set items from localStorage
     const updateStoredItems = () => {
@@ -17,28 +18,32 @@ function Sidebar({ RecieveLocalStorageData }) {
         const data = JSON.parse(localStorage.getItem(key));
         return {
           key,
-          title: key.slice(0, 16), // or extract title from data if needed
+          question: data.question
+            ? data.question.slice(0, 10)
+            : key.slice(0, 10),
           data,
         };
       });
       setStoredItems(items);
     };
 
-    // // Retrieve stored items when component mounts
     updateStoredItems();
 
-    // Event listener for localStorage changes
-    window.addEventListener("storage", updateStoredItems);
+    // window.addEventListener("storage", updateStoredItems);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("storage", updateStoredItems);
-    };
+    // return () => {
+    //   window.removeEventListener("storage", updateStoredItems);
+    // };
   }, []);
 
   const handleItemClick = (key) => {
     const data = JSON.parse(localStorage.getItem(key));
     RecieveLocalStorageData(data, key);
+  };
+
+  const handleRemoveData = (key) => {
+    localStorage.removeItem(key);
+    setStoredItems((prevItems) => prevItems.filter((item) => item.key !== key));
   };
 
   return (
@@ -97,17 +102,25 @@ function Sidebar({ RecieveLocalStorageData }) {
               textAlign: "center",
               boxShadow:
                 "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
-              cursor: "pointer", // Change cursor to pointer to indicate it's clickable
+              cursor: "pointer",
             }}
             onClick={() => handleItemClick(item.key)}
           >
             <Typography sx={{ fontFamily: theme.typography.primary }}>
-              {item.title}
-            </Typography>{" "}
-            {/* Customize the title */}
+              {item.question}
+            </Typography>
             <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ fontSize: "12px" }}>{currentTime}</span>
               <span style={{ fontSize: "12px" }}>{currentDate}</span>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRemoveData(item.key);
+                }}
+                style={{ cursor: "pointer", color: "red" }}
+              >
+                Delete
+              </span>
             </Grid>
           </Grid>
         ))}
