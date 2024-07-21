@@ -86,27 +86,27 @@ function MainBotAi() {
     setFeedBack("");
   }, [previousQnA]);
 
-  const renderContent = () => {
-    if (localstorageData) {
-      return (
-        <Grid
-          sx={{
-            padding: "20px",
-            backgroundColor: "#f5f5f5",
-            borderRadius: "10px",
-            margin: "20px",
-          }}
-        >
-          <Typography variant="h6">Conversation History</Typography>
-          <pre>{JSON.stringify(localstorageData, null, 2)}</pre>
-        </Grid>
-      );
-    } else if (answers) {
-      return <Messenging previousQnA={previousQnA} />;
-    } else {
-      return <Cards />;
-    }
-  };
+  // const renderContent = () => {
+  //   if (localstorageData) {
+  //     return (
+  //       <Grid
+  //         sx={{
+  //           padding: "20px",
+  //           backgroundColor: "#f5f5f5",
+  //           borderRadius: "10px",
+  //           margin: "20px",
+  //         }}
+  //       >
+  //         <Typography variant="h6">Conversation History</Typography>
+  //         <pre>{JSON.stringify(localstorageData, null, 2)}</pre>
+  //       </Grid>
+  //     );
+  //   } else if (answers) {
+  //     return <Messenging previousQnA={previousQnA} />;
+  //   } else {
+  //     return <Cards />;
+  //   }
+  // };
 
   return (
     <Grid container sx={{ display: "flex" }}>
@@ -129,7 +129,7 @@ function MainBotAi() {
           <Typography sx={BotAiName}>Bot AI</Typography>
         </Grid>
         <Grid sx={{ height: "92vh", position: "relative" }}>
-          {!answers && (
+          {!answers && !localstorageData && (
             <Grid sx={howCanIHelpYouCaption}>
               <Typography sx={{ fontSize: "35px", fontWeight: 600 }}>
                 How Can I Help You Today?
@@ -141,7 +141,17 @@ function MainBotAi() {
           )}
           {/* {!answers ? <Cards /> : <Messenging previousQnA={previousQnA} />}
            */}
-          {renderContent()}
+          {/* {renderContent()} */}
+          {localstorageData ? (
+            <HistoryData
+              localstorageData={localstorageData}
+              localstorageKey={localstorageKey}
+            />
+          ) : answers ? (
+            <Messenging previousQnA={previousQnA} />
+          ) : (
+            <Cards />
+          )}
 
           <form
             onSubmit={handleSubmit}

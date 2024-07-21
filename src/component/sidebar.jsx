@@ -49,6 +49,7 @@ function Sidebar({ RecieveLocalStorageData }) {
           display: "flex",
           flexDirection: "column",
           rowGap: 3,
+          overflow: "auto",
         }}
       >
         <Grid
@@ -58,6 +59,8 @@ function Sidebar({ RecieveLocalStorageData }) {
             alignItems: "center",
             bgcolor: theme.palette.primary.light,
             padding: "10px",
+            position: "sticky",
+            top: "0px",
           }}
         >
           <img src={symbol} alt="Symbol" style={{ borderRadius: "10px" }} />
