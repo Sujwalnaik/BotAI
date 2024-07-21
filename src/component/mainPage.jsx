@@ -28,13 +28,13 @@ function MainBotAi() {
   const [feedBack, setFeedBack] = useState("");
   const [formFeedBack, setFormFeedBack] = useState("");
 
-  //data from localstorage
+  //data retriving from localstorage
   const [localstorageData, setLocalstorageData] = useState(null);
-  const [localstorageKey, setLocalStorageKey] = useState(null);
+  // const [localstorageKey, setLocalStorageKey] = useState(null);
 
   const RecieveLocalStorageData = (data, key) => {
     setLocalstorageData(data);
-    setLocalStorageKey(key);
+    // setLocalStorageKey(key);
   };
 
   const handleOpenDialog = () => setOpenDialog(true);
@@ -86,28 +86,6 @@ function MainBotAi() {
     setFeedBack("");
   }, [previousQnA]);
 
-  // const renderContent = () => {
-  //   if (localstorageData) {
-  //     return (
-  //       <Grid
-  //         sx={{
-  //           padding: "20px",
-  //           backgroundColor: "#f5f5f5",
-  //           borderRadius: "10px",
-  //           margin: "20px",
-  //         }}
-  //       >
-  //         <Typography variant="h6">Conversation History</Typography>
-  //         <pre>{JSON.stringify(localstorageData, null, 2)}</pre>
-  //       </Grid>
-  //     );
-  //   } else if (answers) {
-  //     return <Messenging previousQnA={previousQnA} />;
-  //   } else {
-  //     return <Cards />;
-  //   }
-  // };
-
   return (
     <Grid container sx={{ display: "flex" }}>
       <Grid item xs={2}>
@@ -139,14 +117,9 @@ function MainBotAi() {
               </Grid>
             </Grid>
           )}
-          {/* {!answers ? <Cards /> : <Messenging previousQnA={previousQnA} />}
-           */}
-          {/* {renderContent()} */}
+
           {localstorageData ? (
-            <HistoryData
-              localstorageData={localstorageData}
-              localstorageKey={localstorageKey}
-            />
+            <HistoryData localstorageData={localstorageData} />
           ) : answers ? (
             <Messenging previousQnA={previousQnA} />
           ) : (
